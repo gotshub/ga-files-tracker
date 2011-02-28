@@ -13,18 +13,24 @@
      Thanks to Nick Mikailovski (Google) for intitial discussions & Holger Tempel from webalytics.de
      for pointing out the original flaw of doing this in IE.
 
+     ***********
+
+     Extended by gtathub
+     Extended with asynchronous GA script and bug fixes
+     
+     Url: https://github.com/gtathub/ga-files-tracker
+     
 ****************************************************/
 // Only links written to the page (already in the DOM) will be tagged
-// This version is for ga.js (last updated Jan 15th 2009)
-
 
 function addLinkerEvents() {
 	var as = document.getElementsByTagName("a");
-	var extTrack = ["advanced-web-metrics.com","brianjclifton.com","kampyle.com"];
+	var extTrack = ["brianjclifton.com","kampyle.com"];
 	// List of local sites that should not be treated as an outbound link. Include at least your own domain here
 	
 	var extDoc = [".doc",".xls",".exe",".zip",".pdf",".js"];
-	//List of file extensions on your site. Add/edit as you require
+
+        //List of file extensions on your site. Add/edit as you require
 	
 	/*If you edit no further below this line, Top Content will report as follows:
 		/ext/url-of-external-site
@@ -36,30 +42,27 @@ function addLinkerEvents() {
 		var flag = 0;
 		var tmp = as[i].getAttribute("onclick");
 
-		// IE6-IE7 fix (null values error) with thanks to Julien Bissonnette for this
-		if (tmp != null) {
-		  tmp = String(tmp);
-		  if (tmp.indexOf('urchinTracker') > -1 || tmp.indexOf('_trackPageview') > -1) continue;
-    		}
-
-		// Tracking outbound links off site - not the GATC
+                // Tracking outbound links off site
 		for (var j=0; j<extTrack.length; j++) {					
-			if (as[i].href.indexOf(extTrack[j]) == -1 && as[i].href.indexOf('google-analytics.com') == -1 ) {
+			if (as[i].href.indexOf(extTrack[j]) == -1) {
 				flag++;
 			}
 		}
 		
-		if (flag == extTrack.length && as[i].href.indexOf("mailto:") == -1){
-			as[i].onclick = function(){ var splitResult = this.href.split("//");pageTracker._trackPageview('/ext/' +splitResult[1]) + ";" +((tmp != null) ? tmp+";" : "");};
-				//alert(as[i] +"  ext/" +splitResult[1])
+		if (flag != extTrack.length && as[i].href.indexOf("mailto:") == -1){
+			as[i].onclick = function() {
+                            var splitResult = this.href.split("//");
+                            _gaq.push(['_trackPageview', '/ext/' +splitResult[1]]);
+                        };
 		}			
 
 		// Tracking electronic documents - doc, xls, pdf, exe, zip
 		for (var j=0; j<extDoc.length; j++) {
-			if (as[i].href.indexOf(extTrack[0]) != -1 && as[i].href.indexOf(extDoc[j]) != -1) {
-				as[i].onclick = function(){ var splitResult = this.href.split(extTrack[0]);pageTracker._trackPageview('/downloads' +splitResult[1])+ ";"
-+((tmp != null) ? tmp+";" : "");}
-				//alert(as[i] +"  downloads" +splitResult[1])
+			if (flag == extTrack.length && as[i].href.indexOf(extDoc[j]) != -1) {
+				as[i].onclick = function() {
+                                    var splitResult = this.href.split(window.location.host + "/");
+                                    _gaq.push(['_trackPageview', '/downloads/' + splitResult[1]]);
+                                }
 				break;
 			}
 		}
@@ -68,8 +71,10 @@ function addLinkerEvents() {
 		// added to track mailto links 23-Oct-2007
 		// updated 31-Oct-2008 to remove break command - thanks to Victor Geerdink for spotting this
 		if (as[i].href.indexOf("mailto:") != -1) {
-			as[i].onclick = function(){ var splitResult = this.href.split(":");pageTracker._trackPageview('/mailto/' +splitResult[1])+ ";"+((tmp != null) ? tmp+";" : "");}
-			//alert(as[i] +"  mailto/" +splitResult[1])
+			as[i].onclick = function() {
+                            var splitResult = this.href.split(":");
+                            _gaq.push(['_trackPageview', '/mailto/' +splitResult[1]]);
+                        }
 		}
 	}
 }
