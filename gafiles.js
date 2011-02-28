@@ -20,10 +20,13 @@
      
      Url: https://github.com/gtathub/ga-files-tracker
      
+     Usage:
+     Insert this into your body tag: <body onload="trackgafiles()">
+     
 ****************************************************/
 // Only links written to the page (already in the DOM) will be tagged
 
-function addLinkerEvents() {
+function trackgafiles() {
 	var as = document.getElementsByTagName("a");
 	var extTrack = ["brianjclifton.com","kampyle.com"];
 	// List of local sites that should not be treated as an outbound link. Include at least your own domain here
