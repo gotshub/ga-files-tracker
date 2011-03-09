@@ -7,13 +7,17 @@ Usage
 -----
 
 * Add the javascript file to your header like here:
+
     <html>
     <head>
     ...
     <script type="text/javascript" src="gafiles.js"></script>
     ...
     </head>
+
 * Then add the function call to the onload attribute of your body tag.
+
     ...
     <body onload="trackgafiles()">
     ...
+
