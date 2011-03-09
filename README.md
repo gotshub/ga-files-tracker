@@ -8,16 +8,16 @@ Usage
 
 * Add the javascript file to your header like here:
 
-    <html>
-    <head>
+    &lt;html&gt;
+    &lt;head&gt;
     ...
-    <script type="text/javascript" src="gafiles.js"></script>
+    &lt;script type="text/javascript" src="gafiles.js"&gt;&lt;/script&gt;
     ...
-    </head>
+    &lt;/head&gt;
 
 * Then add the function call to the onload attribute of your body tag.
 
     ...
-    <body onload="trackgafiles()">
+    &lt;body onload="trackgafiles()"&gt;
     ...
 
